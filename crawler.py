@@ -43,4 +43,4 @@ class Crawler:
     def get_document(self):
         return self.document
 
-gather_id_category(url)
+#gather_id_category(url)

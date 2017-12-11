@@ -21,7 +21,7 @@ class Crawler:
     def make_corpus(self):
         stream="0"
         file = open('corpus.txt','a', encoding="utf-8") #write in a file
-        while True:
+        while True:#for _ in range(100):
             url_stream = 'http://lapor.go.id/home/streams/{}/{}/old/beranda'.format(stream,self.id_kategori[0])
             try:
                 stat = requests.get(url_stream, verify=True)

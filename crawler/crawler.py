@@ -19,21 +19,24 @@ class Crawler:
             self.id_kategori.append(option['value'])
 
     def make_corpus(self):
-        stream="1488764654"
-        count = 0
-        file = open('corpus.txt','a') #write in a file
+        stream="1373978177"
+        file = open('corpus.txt','a', encoding="utf-8") #write in a file
         while True:
-            if count == 30:
-                time.sleep(30)
-                count = 0
             url_stream = 'http://lapor.go.id/home/streams/{}/{}/old/beranda'.format(stream,self.id_kategori[0])
-            stat = requests.get(url_stream, verify=True)
             try:
+                stat = requests.get(url_stream, verify=True)
                 stat.raise_for_status()
             except requests.exceptions.HTTPError as e:
+                print("Error {} on parameter {}".format(e, stream))
+            except requests.exceptions.RequestException as ee:
+                print("Error {} on parameter {}".format(ee, stream))
+            except requests.exceptions.ConnectionError as er:
+                print("Error {} on parameter {}".format(er, stream))
+            except requests.exceptions.Timeout as err:
+                print("Error {} on parameter {}".format(err, stream))
+            except TimeoutError as te:
                 print("Timeout on parameter {}".format(stream))
-            raw = stat.text
-            data = json.loads(raw)
+            data = json.loads(stat.text)
             if len(data) == 0:
                 stream="0"
                 break
@@ -44,8 +47,7 @@ class Crawler:
                 file.write("{}\n".format(data[d]['subject']))
                 file.write("{}\n\n".format(data[d]['content']))
             stream=data[len(data)-1]['last_activity']
-            count += 1
-            print("{}".format(stream)) #check berhenti sampai mana
+            #print("{}".format(stream)) #check which param is in request
 
         file.close()
 

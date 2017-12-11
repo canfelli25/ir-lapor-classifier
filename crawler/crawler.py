@@ -19,7 +19,7 @@ class Crawler:
             self.id_kategori.append(option['value'])
 
     def make_corpus(self):
-        stream="1373978177"
+        stream="0"
         file = open('corpus.txt','a', encoding="utf-8") #write in a file
         while True:
             url_stream = 'http://lapor.go.id/home/streams/{}/{}/old/beranda'.format(stream,self.id_kategori[0])

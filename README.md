@@ -56,7 +56,7 @@ Add additional notes about how to deploy this on a live system
 
 * **Felicia** - *1506726183* - [feliciakrismanta](https://github.com/feliciakrismanta)
 * **Fellita Candini** - *15067* - [canfelli25](https://github.com/canfelli25)
-* **Valentina Kania Prameswara** - *15067* - [valentinakania](https://github.com/valentinakania)
+* **Valentina Kania Prameswara** - *1506757264* - [valentinakania](https://github.com/valentinakania)
 * **Vincent** - *15067* - [vincent](https://github.com/vin_cent)
 
 ## License
@@ -65,6 +65,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* Hat tip to anyone who's code was used
-* Inspiration
+* [PySastrawi]() - Python module for word stemming in Bahasa Indonesia
+* [LDA]() - Python module for LDA modelling
 * etc

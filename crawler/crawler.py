@@ -1,7 +1,7 @@
 import requests, time
 import json
 from bs4 import BeautifulSoup
-from document import Document
+from .document import Document
 
 url = 'http://lapor.go.id/beranda'
 
@@ -41,8 +41,8 @@ class Crawler:
                 stream="0"
                 break
             for d in range(len(data)):
-                #doc = Document(data[d]['nid'],data[d]['subject'],data[d]['content']) #making object
-                #self.document.append(doc)
+                doc = Document(data[d]['nid'],data[d]['subject'],data[d]['content']) #making object
+                self.document.append(doc)
                 file.write("{}\n".format(data[d]['nid']))
                 file.write("{}\n".format(data[d]['subject']))
                 file.write("{}\n\n".format(data[d]['content']))
@@ -52,8 +52,31 @@ class Crawler:
         file.close()
 
     def get_document(self):
+        if self.document == []:
+            try:
+                corpus = open('corpus.txt', 'r', encoding="utf-8")
+                lines = corpus.readlines()
+                number = ""
+                title = ""
+                text = ""
+                is_text = 0
+                for l in lines[:100]:
+                    if l == "\n":
+                        doc = Document(number, title, text)
+                        self.document.append(doc)
+                        is_text = 0
+                    elif is_text == 0:
+                        number = l
+                        is_text += 1
+                    elif is_text == 1:
+                        title = l
+                        is_text += 1
+                    elif is_text == 2:
+                        text += l
+            except FileNotFoundError:
+                self.make_corpus()
         return self.document
 
-c = Crawler()
-c.gather_id_category()
-c.make_corpus()
+# c = Crawler()
+# c.gather_id_category()
+# c.get_document()

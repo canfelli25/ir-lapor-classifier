@@ -60,7 +60,7 @@ class Crawler:
                 title = ""
                 text = ""
                 is_text = 0
-                for l in lines[:100]:
+                for l in lines:
                     if l == "\n":
                         doc = Document(number, title, text)
                         self.document.append(doc)

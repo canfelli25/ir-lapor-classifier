@@ -45,4 +45,4 @@ documents = c.get_document()
 for d in documents:
     d.title = tp.stem_word(d.title)
     d.text = tp.stem_word(d.text)
-    print("Judul: {}\nTeks: {}".format(d.title, d.text))
+    

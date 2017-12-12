@@ -55,7 +55,7 @@ Add additional notes about how to deploy this on a live system
 ## Authors
 
 * **Felicia** - *1506726183* - [feliciakrismanta](https://github.com/feliciakrismanta)
-* **Fellita Candini** - *15067* - [canfelli25](https://github.com/canfelli25)
+* **Fellita Candini** - *1506757900* - [canfelli25](https://github.com/canfelli25)
 * **Valentina Kania Prameswara** - *15067* - [valentinakania](https://github.com/valentinakania)
 * **Vincent** - *15067* - [vincent](https://github.com/vin_cent)
 

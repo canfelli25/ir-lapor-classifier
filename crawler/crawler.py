@@ -1,4 +1,4 @@
-import requests, time
+import requests, time, gc
 import json
 from bs4 import BeautifulSoup
 from .document import Document
@@ -60,7 +60,7 @@ class Crawler:
                 title = ""
                 text = ""
                 is_text = 0
-                for l in lines:
+                for l in lines: #[:10000]:
                     if l == "\n":
                         doc = Document(number, title, text)
                         self.document.append(doc)
@@ -75,6 +75,7 @@ class Crawler:
                         text += l
             except FileNotFoundError:
                 self.make_corpus()
+        gc.collect()
         return self.document
 
 # c = Crawler()

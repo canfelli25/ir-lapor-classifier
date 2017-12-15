@@ -1,11 +1,14 @@
 import re
 from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
+from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
 from crawler.crawler import Crawler
 
 class TextProcessor:
     def __init__(self):
-        self.factory = StemmerFactory()
-        self.stemmer = self.factory.create_stemmer()
+        self.stemmer_factory = StemmerFactory()
+        self.remover_factory = StopWordRemoverFactory()
+        self.stopword = self.remover_factory.create_stop_word_remover()
+        self.stemmer = self.stemmer_factory.create_stemmer()
 
     def levenshtein_distance(self, s1, s2):
         if len(s1) > len(s2):
@@ -22,27 +25,29 @@ class TextProcessor:
             distances = distances_
         return distances[-1]
 
-    def stem_word(self, s1):
+    def clean_word(self, s1):
         # remove double character
-        s1 = self.clean_word(s1)
+        s1 = self.clean_format(s1)
         s1 = self.remove_double_character(s1)
 
         # stemming process
-        output   = self.stemmer.stem(s1)
+        s1   = self.stemmer.stem(s1)
+        output = self.stopword.remove(s1)
         return output
 
     def remove_double_character(self, s1):
         s1_ = re.sub(r'([^gnk])\1+', r'\1', s1)
         return s1_
 
-    def clean_word(self, s1):
+    def clean_format(self, s1):
         s1_ = re.sub(r'(<br />|<br>)', '', s1 )
         return s1_
 
-tp = TextProcessor()
-c = Crawler()
-documents = c.get_document()
-for d in documents:
-    d.title = tp.stem_word(d.title)
-    d.text = tp.stem_word(d.text)
+
+# tp = TextProcessor()
+# c = Crawler()
+# documents = c.get_document()
+# for d in documents:
+#     d.title = tp.clean_word(d.title)
+#     d.text = tp.clean_word(d.text)
     

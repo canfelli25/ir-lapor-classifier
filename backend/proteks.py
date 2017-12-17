@@ -40,12 +40,13 @@ class TextProcessor:
 
         # stemming process
         s1   = self.stemmer.stem(s1)
-        output = self.stopword.remove(s1)
+        s1 = self.stopword.remove(s1)
 
         for w in ADDED_STOPWORDS:
-            output = output.replace(w, "")
+            s1 = s1.replace(w, "")
 
-        return output
+        s1 = self.find_bigrams(s1)
+        return s1
 
     def remove_double_character(self, s1):
         s1_ = re.sub(r'([^gnk])\1+', r'\1', s1)
@@ -56,11 +57,18 @@ class TextProcessor:
         s1_ = re.sub(r'(<br />|<br>)', '', s1 )
         return s1_
     
-
+    def find_bigrams(self, s1):
+        input_list = s1.split()
+        bigram_list = []
+        for i in range(len(input_list)-1):
+            bigram_list.append((input_list[i] + "-" + input_list[i+1]))
+        bigram = " ".join(bigram_list)
+        return bigram
 
 # tp = TextProcessor()
 # c = Crawler()
 # documents = c.get_document()
 # for d in documents:
 #     tp.clean_word(d)
-    
+#     print(d.title)
+#     print(d.text)

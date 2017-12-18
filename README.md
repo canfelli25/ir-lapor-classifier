@@ -1,6 +1,6 @@
 # Lapor Classifier
 
-Simple crawler and topic modelling for lapor.go.id equipped with react and D3.js front end for visualization. 
+Simple crawler and topic modelling for lapor.go.id equipped with react and D3.js + jQCloud front end for visualization. 
 
 Since lapor.go.id do not have tags feature, this application purpose is to create relevant tags and to visualize the big picture of all lapor.go.id entries. Using Latent Dirichlet Allocation (LDA) for the topic modelling.
 
@@ -13,7 +13,7 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 * Python 3.6
-* ...
+* Browser
 
 
 ### Installing
@@ -42,6 +42,7 @@ Add additional notes about how to deploy this on a live system
 
 * [React](http://facebook.github.io/React) - The web framework used
 * [D3.js]() - The data visualization framework used
+* [jQCloud]() - The data visualization framework used
 * [Python]() - Backend
 
 ## Contributing

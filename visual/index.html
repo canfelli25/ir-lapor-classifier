@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Lapor Classifier</title>
+    <link rel="stylesheet" type="text/css" href="jqcloud.css" />
+    <style>
+    	@import url(https://fonts.googleapis.com/css?family=Roboto:300);
+
+    	h1 {
+    		font-family: 'Roboto', serif;
+    	}
+
+        body {
+            margin-top: 50px;
+            font-family: 'Trebuchet MS', serif;
+            line-height: 1.6
+        }
+        ul.tabs {
+            margin: 0px;
+            padding: 0px;
+            list-style: none;
+        }
+        ul.tabs li {
+            background: none;
+            color: #222;
+            display: inline-block;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+        ul.tabs li.current {
+            background: #ededed;
+            color: #222;
+        }
+        .tab-content {
+            display: none;
+            background: #ededed;
+            padding: 15px;
+        }
+        .tab-content.current {
+            display: inherit;
+        }
+        .cloud {
+            display: inline-block;
+            background-color: blue;
+            margin-left: 1em;
+            margin-right: 1em;
+            margin-top: 1em;
+            margib-bottom: 1em;
+            -webkit-transition: 0.3s box-shadow ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+            border-radius: 5px;
+            background-color: #f0f1f2;
+        }
+        .container {
+            margin: 0 auto;
+            max-width: 112.0rem;
+            padding: auto;
+            position: relative;
+            width: 100%;
+        }
+    </style>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+    <script type="text/javascript" src="jqcloud-1.0.4.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var word_array = [];
+
+            $.ajax({
+                type: "GET",
+                url: "output.csv",
+                dataType: "text",
+                success: function(data) {
+                    processData(data);
+                }
+            });
+
+            function processData(allText) {
+                var allTextLines = allText.split(/\r\n|\n/);
+                var headers = allTextLines[0].split(',');
+                var lines = [];
+
+                for (var i = 1; i < allTextLines.length; i++) {
+                    var data = allTextLines[i].split(',');
+                    if (data.length == headers.length) {
+
+                        var tarr = [];
+                        for (var j = 0; j < headers.length; j++) {
+                            tarr.push(data[j]);
+                        }
+                        lines.push(tarr);
+                    }
+                }
+                var counter = 1;
+                for (var i = 0; i < lines.length; i++) {
+                    var line = lines[i];
+                    if (line[0] != counter || i == lines.length - 1) {
+                        if (i == lines.length - 1) {
+                            word_array.push({
+                                text: line[1],
+                                weight: parseFloat($.trim(line[2]))
+                            });
+                        }
+                        var id = "#wordcloud" + counter;
+                        console.log(id);
+                        $(id).jQCloud(word_array);
+                        word_array = [];
+                        counter++;
+                    }
+                    word_array.push({
+                        text: line[1],
+                        weight: parseFloat($.trim(line[2]))
+                    });
+                }
+            }
+        });
+    </script>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Lapor Classifier</h1>
+        <p>Lapor Classifier is a data visualization webpage providing insights on lapor.go.id topic distribution. Since lapor.go.id do not have tags feature, this application purpose is to create relevant tags and to visualize the big picture of all lapor.go.id entries. Using Latent Dirichlet Allocation (LDA) for the topic modelling. Built with Python &amp; D3.js + jQCloud for visualization.
+            <br/>Created as the fourth assignment of Information Retrieval course (IKO41357).
+        </p>
+        <ul class="tabs">
+            <li class="tab-link current" data-tab="tab-1">Bubble Chart</li>
+            <li class="tab-link" data-tab="tab-2">Word Cloud</li>
+        </ul>
+
+        <div id="tab-1" class="tab-content current">
+            <div class="chart-example" id="chart">
+                <svg></svg>
+            </div>
+        </div>
+        <div id="tab-2" class="tab-content">
+            <div id="wordcloud1" class="cloud left" style="width: 550px; height: 350px;"></div>
+            <div id="wordcloud2" class="cloud right" style="width: 550px; height: 350px;"></div>
+            <div id="wordcloud3" class="cloud left" style="width: 550px; height: 350px;"></div>
+            <div id="wordcloud4" class="cloud right" style="width: 550px; height: 350px;"></div>
+            <div id="wordcloud5" class="cloud left" style="width: 550px; height: 350px;"></div>
+            <div id="wordcloud6" class="cloud right" style="width: 550px; height: 350px;"></div>
+            <div id="wordcloud7" class="cloud left" style="width: 550px; height: 350px;"></div>
+            <div id="wordcloud8" class="cloud right" style="width: 550px; height: 350px;"></div>
+            <div id="wordcloud9" class="cloud left" style="width: 550px; height: 350px;"></div>
+            <div id="wordcloud10" class="cloud right" style="width: 550px; height: 350px;"></div>
+        </div>
+
+    </div>
+    <!-- container end -->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="bubble_chart.js"></script>
+    <script>
+        d3.csv('output.csv', function(error, data) {
+            if (error) {
+                console.error('Error getting or parsing the data.');
+                throw error;
+            }
+            var chart = bubbleChart().width(900).height(700);
+            d3.select('#chart').data(data).call(chart);
+        });
+
+        $(document).ready(function() {
+
+            $('ul.tabs li').click(function() {
+                var tab_id = $(this).attr('data-tab');
+
+                $('ul.tabs li').removeClass('current');
+                $('.tab-content').removeClass('current');
+
+                $(this).addClass('current');
+                $("#" + tab_id).addClass('current');
+            })
+
+        })
+    </script>
+</body>
+
+</html>

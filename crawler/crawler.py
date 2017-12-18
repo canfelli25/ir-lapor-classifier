@@ -1,5 +1,4 @@
-import requests, time
-import json
+import requests, time, json
 from bs4 import BeautifulSoup
 from document import Document
 
@@ -14,14 +13,14 @@ class Crawler:
     def gather_id_category(self):
         r = requests.get(self.url)
         data = r.text
-        soup = BeautifulSoup(data)
+        soup = BeautifulSoup(data, "html.parser")
         for option in soup.findAll('option'):
             self.id_kategori.append(option['value'])
 
     def make_corpus(self):
         stream="0"
-        file = open('corpus.txt','a', encoding="utf-8") #write in a file
-        while True:#for _ in range(100):
+        #file = open('corpus.txt','a', encoding="utf-8") #write in a file
+        for _ in range(2):
             url_stream = 'http://lapor.go.id/home/streams/{}/{}/old/beranda'.format(stream,self.id_kategori[0])
             try:
                 stat = requests.get(url_stream, verify=True)
@@ -41,15 +40,15 @@ class Crawler:
                 stream="0"
                 break
             for d in range(len(data)):
-                #doc = Document(data[d]['nid'],data[d]['subject'],data[d]['content']) #making object
-                #self.document.append(doc)
-                file.write("{}\n".format(data[d]['nid']))
-                file.write("{}\n".format(data[d]['subject']))
-                file.write("{}\n\n".format(data[d]['content']))
+                doc = Document(data[d]['nid'],data[d]['subject'],data[d]['content']) #making object
+                self.document.append(doc)
+                #file.write("{}\n".format(data[d]['nid']))
+                #file.write("{}\n".format(data[d]['subject']))
+                #file.write("{}\n\n".format(data[d]['content']))
             stream=data[len(data)-1]['last_activity']
             #print("{}".format(stream)) #check which param is in request
 
-        file.close()
+        #file.close()
 
     def get_document(self):
         return self.document
